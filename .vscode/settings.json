@@ -1,0 +1,12 @@
+{
+   "files.exclude": {
+      "**/build": true,
+      "**/.vscode": true,
+      "**/.idea": true,
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/*.lock": true,
+      "**/.*": true,
+      "**/*.iml": true,
+   }
+}
