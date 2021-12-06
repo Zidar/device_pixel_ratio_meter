@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -7,6 +8,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   double devicePixelRatio;
+  bool isFullScreen = false;
 
   @override
   didChangeMetrics() {
@@ -38,12 +40,17 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text("devicePixelRatio:", style: theme.headline6.copyWith(fontSize: 24)),
-              Text("$devicePixelRatio", style: theme.headline2),
+              Text("${devicePixelRatio.toStringAsFixed(3)}", style: theme.headline2),
 
               SizedBox(height: 16),
 
-              Text("scaffold size:", style: theme.headline6),
+              Text("logical scaffold size:", style: theme.headline6),
               Text("${size.width.toStringAsFixed(1)} x ${size.height.toStringAsFixed(1)}", style: theme.headline5),
+
+              SizedBox(height: 16),
+
+              Text("real scaffold size:", style: theme.headline6),
+              Text("${(size.width * devicePixelRatio).toStringAsFixed(1)} x ${(size.height * devicePixelRatio).toStringAsFixed(1)}", style: theme.headline5),
 
               SizedBox(height: 16),
 
@@ -63,6 +70,19 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                 width: 100 / devicePixelRatio,
                 height: 8,
                 color: Colors.red,
+              ),
+              SizedBox(height: 16),
+
+              ElevatedButton(
+                onPressed: () async {
+                  isFullScreen = !isFullScreen;
+                  if (isFullScreen)
+                    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+                  else
+                    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+                  setState((){});
+                },
+                child: Text("Toggle full screen")
               ),
             ],
           ),
